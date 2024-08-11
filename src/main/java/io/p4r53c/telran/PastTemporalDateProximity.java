@@ -5,10 +5,21 @@ import java.time.temporal.Temporal;
 import java.time.temporal.TemporalAdjuster;
 import java.util.Arrays;
 
+/**
+ * Class that implements the TemporalAdjuster interface and provides a way to find the
+ * closest past date from a given set of past dates.
+ *
+ * @author p4r53c
+ */
 public class PastTemporalDateProximity implements TemporalAdjuster {
 
     private ChronoLocalDate[] chronoLocalDates;
 
+    /**
+     * Constructs a new PastTemporalDateProximity object.
+     *
+     * @param temporals the array of past Temporal objects
+     */
     public PastTemporalDateProximity(Temporal[] temporals) {
         this.chronoLocalDates = Arrays.copyOf(new ChronoLocalDate[temporals.length], temporals.length);
 
@@ -19,6 +30,12 @@ public class PastTemporalDateProximity implements TemporalAdjuster {
         Arrays.sort(this.chronoLocalDates);
     }
 
+    /**
+     * Adjusts the given Temporal object to the closest past date from the set of past dates.
+     *
+     * @param temporal the Temporal object to be adjusted
+     * @return the adjusted Temporal object or null if no past date is found
+     */
     @Override
     public Temporal adjustInto(Temporal temporal) {
         ChronoLocalDate targetDate = ChronoLocalDate.from(temporal);

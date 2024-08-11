@@ -1,0 +1,8 @@
+# Ignore vscode proj directory
+.vscode/
+
+# Ignore build output
+target
+
+# Ignore log files
+*.log

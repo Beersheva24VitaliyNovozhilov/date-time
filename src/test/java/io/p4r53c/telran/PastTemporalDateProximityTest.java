@@ -53,7 +53,7 @@ class PastTemporalDateProximityTest {
         assertEquals(expectedTemporal, result);
     }
 
-    // Next test method not have duplicates in the their arrays
+    // The following test methods do not contain duplicate temporals, as tested above.
     @Test
     void testAdjustIntoWithLocalDateTime() {
         Temporal[] temporals = {

@@ -20,10 +20,17 @@ public class PastTemporalDateProximity implements TemporalAdjuster {
         Arrays.sort(this.localDates);
     }
 
+    /**
+     * Adjusts the given Temporal object to the closest date in the past from the
+     * stored dates.
+     *
+     * @param temporal the Temporal object to be adjusted
+     * @return the adjusted Temporal object, or null if no adjustment is possible
+     */
     @Override
     public Temporal adjustInto(Temporal temporal) {
         LocalDate targetDate = convertToLocalDate(temporal);
-        
+
         int low = 0;
         int high = localDates.length - 1;
         int resultIndex = -1;
@@ -40,6 +47,12 @@ public class PastTemporalDateProximity implements TemporalAdjuster {
         return resultIndex != -1 ? temporal.with(localDates[resultIndex]) : null;
     }
 
+    /**
+     * Converts a Temporal object to a LocalDate.
+     *
+     * @param temporal the Temporal object to be converted
+     * @return the converted LocalDate
+     */
     private LocalDate convertToLocalDate(Temporal temporal) {
         try {
             return LocalDate.from(temporal);

@@ -53,7 +53,8 @@ class PastTemporalDateProximityTest {
         assertEquals(expectedTemporal, result);
     }
 
-    // The following test methods do not contain duplicate temporals, as tested above.
+    // The following test methods do not contain duplicate temporals, as tested
+    // above.
     @Test
     void testAdjustIntoWithLocalDateTime() {
         Temporal[] temporals = {
@@ -206,7 +207,55 @@ class PastTemporalDateProximityTest {
 
         testTemporal = ThaiBuddhistDate.of(5000, 1, 2);
         expectedTemporal = ThaiBuddhistDate.of(5000, 1, 1);
-        
+
+        result = adjuster.adjustInto(testTemporal);
+        assertEquals(expectedTemporal, result);
+    }
+
+    @Test
+    void testAdjustIntoWithMixedTemporalTypes() {
+        Temporal[] temporals = {
+                ZonedDateTime.of(1900, 1, 1, 0, 0, 0, 0, ZoneId.of("UTC")),
+                MinguoDate.of(111, 1, 1), // Equivalent to 2022-01-01
+                ThaiBuddhistDate.of(2566, 3, 1), // Equivalent to 2023-03-01
+                LocalDateTime.of(2023, 5, 1, 10, 0),
+                ZonedDateTime.of(2123, 1, 1, 0, 0, 0, 0, ZoneId.of("GMT-8"))
+        };
+
+        PastTemporalDateProximity adjuster = new PastTemporalDateProximity(temporals);
+
+        Temporal testTemporal = ZonedDateTime.of(2022, 4, 1, 10, 0, 0, 0, ZoneId.of("UTC"));
+        Temporal expectedTemporal = ZonedDateTime.of(2022, 1, 1, 10, 0, 0, 0, ZoneId.of("UTC"));
+
+        Temporal result = adjuster.adjustInto(testTemporal);
+        assertEquals(expectedTemporal, result);
+
+        testTemporal = LocalDateTime.of(2023, 6, 1, 10, 0);
+        expectedTemporal = LocalDateTime.of(2023, 5, 1, 10, 0);
+
+        result = adjuster.adjustInto(testTemporal);
+        assertEquals(expectedTemporal, result);
+
+        // Equivalent to 2022-06-01
+        testTemporal = MinguoDate.of(111, 6, 1);
+        // Expect to get MinguoDate equivalent of 2022-01-01
+        expectedTemporal = MinguoDate.of(111, 1, 1);
+
+        result = adjuster.adjustInto(testTemporal);
+        assertEquals(expectedTemporal, result);
+
+        // Equivalent to 2023-04-01
+        testTemporal = ThaiBuddhistDate.of(2566, 4, 1);
+
+        // Expect to get ThaiBuddhistDate equivalent of 2023-03-01
+        expectedTemporal = ThaiBuddhistDate.of(2566, 3, 1);
+
+        result = adjuster.adjustInto(testTemporal);
+        assertEquals(expectedTemporal, result);
+
+        testTemporal = ZonedDateTime.of(2123, 1, 2, 0, 0, 0, 0, ZoneId.of("GMT-8"));
+        expectedTemporal = ZonedDateTime.of(2123, 1, 1, 0, 0, 0, 0, ZoneId.of("GMT-8"));
+
         result = adjuster.adjustInto(testTemporal);
         assertEquals(expectedTemporal, result);
     }

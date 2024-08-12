@@ -23,6 +23,7 @@ public class PastTemporalDateProximity implements TemporalAdjuster {
     @Override
     public Temporal adjustInto(Temporal temporal) {
         LocalDate targetDate = convertToLocalDate(temporal);
+        
         int low = 0;
         int high = localDates.length - 1;
         int resultIndex = -1;
